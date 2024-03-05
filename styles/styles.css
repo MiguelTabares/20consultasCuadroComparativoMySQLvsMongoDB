@@ -1,0 +1,27 @@
+body{
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+    font-family: 'Ubuntu';
+}
+
+.titleContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tableContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+table, td{
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+th, tr, td{
+    text-align: center;
+}

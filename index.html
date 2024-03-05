@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/styles.css">
+    <title>Document</title>
+</head>
+<body>
+    <section class="titleContainer">
+        <h1>Cuadro comparativo entre las sentencias para consultas en MySQL vs Mongo DB</h1>
+    </section>
+
+    <section class="tableContainer">
+        <table class="table table-sm table-dark">
+            <thead>
+              <tr>
+                <th scope="col">Sentencias en MYSQL</th>
+                <th scope="col">Sentencias en MONGODB</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>
+                    1. Listado de todos los usuarios con solo los nombres, apellidos y edad, que tengan 20 años de edad. Con MySQL: 
+                  </p>
+                  <p>
+                    SELECT nombres, apellidos, edad FROM users WHERE edad = 20;
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    1. Listado de todos los usuarios con solo los nombres, apellidos y edad, que tengan 20 años de edad. Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.find( {edad:20}, { nombres: 1, apellidos: 1, edad: 1, _id: 0});
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <p>
+                    2. Listado de todas las mujeres en la Base de Datos que tengan entre 20 y 30 años de edad. Con MySQL: 
+                  </p>
+                  <p>
+                    SELECT nombres, genero, edad FROM users WHERE genero = 'M' AND edad >= 20 AND edad <=30;
+                    <br>
+                    <br>
+                    SELECT * FROM users WHERE genero = 'M' AND >= 20 AND EDAD <=30;
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    2. Listado de todas las mujeres en la Base de Datos que tengan entre 20 y 30 años de edad. Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.find({genero: 'M', edad: {$gte: 20, $lte: 30}}, { nombres: 1, apellidos: 1, genero: 1, edad: 1, _id: 0});
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <p>
+                    3. ¿Quién es la persona con menos edad de la Base de Datos? Con MySQL:
+                  </p>
+                  <p>
+                    SELECT nombres, MIN(edad) FROM users;
+                    <br>
+                    <br>
+                    SELECT * FROM users ORDER BY edad ASC LIMIT 1;
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    3. ¿Quién es la persona con menos edad de la Base de Datos? Con MongoDB:
+                  </p>
+                  <p>
+                    db.users.find().sort({ edad: 1 }).limit(1);
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <p>
+                    4. ¿Cuántos usuarios hay registrados en la Base de Datos?. Con MySQL: 
+                  </p>
+                  <p>
+                    SELECT COUNT(id) AS Total FROM users;
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    4. ¿Cuántos usuarios hay registrados en la Base de Datos?. Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.count();
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <p>
+                    5. Traer los 5 primeros usuarios de la base de datos. Con MySQL:
+                  </p>
+                  <p>
+                    SELECT DISTINCT * FROM users ORDER BY id ASC LIMIT 5;
+                    <br>
+                    <br>
+                    SELECT TOP 5 * FROM users ORDER BY id;
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    5. Traer los 5 primeros usuarios de la base de datos . Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.find().limit(5);
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <p>
+                    6. Traer los 10 últimos usuarios de la base de datos. Con MySQL: 
+                  </p>
+                  <p>
+                    SELECT DISTINCT * FROM users ORDER BY id DESC LIMIT 10;
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    6. Traer los 10 últimos usuarios de la base de datos. Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.find().sort({_id: -1}).limit(10);
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <p>
+                    7. Listar usuarios que su correo finalice en .net. Con MySQL: 
+                  </p>
+                  <p>
+                    SELECT * FROM users WHERE correo LIKE '%.net';
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    7. Listar usuarios que su correo finalice en .net. Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.find({ correo: { $regex: /\.net$/i } });
+                  </p>
+                </td>
+              </tr>
+              
+              <tr>
+                <td>
+                  <p>
+                    8. Listar usuarios que NO vivan en Colombia. Con MySQL: 
+                  </p>
+                  <p>
+                    SELECT * FROM users where pais <> 'colombia';
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    8. Listar usuarios que NO vivan en Colombia. Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.find({ pais: { $ne: "colombia" } });
+                  </p>
+                </td>
+              </tr>
+              
+              <tr>
+                <td>
+                  <p>
+                    9. Listar usuarios que NO vivan en Ecuador y Panamá. Con MySQL: 
+                  </p>
+                  <p>
+                    SELECT * FROM users where pais <> 'ecuador' AND pais <> 'panama';
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    9. Listar usuarios que NO vivan en Ecuador y Panamá. Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.find({ pais: { $nin: ["ecuador", "panama"] } });
+                  </p>
+                </td>
+              </tr> 
+
+              <tr>
+                <td>
+                  <p>
+                    10. ¿Cuántos (en números) usuarios son de Colombia y les gusta el rock?. Con MySQL: 
+                  </p>
+                  <p>
+                    SELECT COUNT(id) AS Total FROM users WHERE pais = 'colombia' AND musica = "rock";
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    10. ¿Cuántos (en números) usuarios son de Colombia y les gusta el rock?. Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.count({ pais: "colombia", musica: "rock" });
+                  </p>
+                </td>
+              </tr>  
+
+              <tr>
+                <td>
+                  <p>
+                    11. Actualizar el género musical de todos los usuarios de la Base de Datos de "metal" a "carranga". Con MySQL: 
+                  </p>
+                  <p>
+                    UPDATE users SET musica = 'carranga' WHERE musica = 'metal';
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    11. Actualizar el género musical de todos los usuarios de la Base de Datos de "metal" a "carranga". Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.updateMany(
+                        { musica: "metal" },
+                        { $set: { musica: "carranga" } }
+                    );
+                  </p>
+                </td>
+              </tr>                
+              
+              <tr>
+                <td>
+                  <p>
+                    12. Listado de hombres que les guste la "carranga" sean de Colombia, y tengan entre 10 y 20 años de edad. Con MySQL: 
+                  </p>
+                  <p>
+                    SELECT * FROM users WHERE genero = 'H' AND musica = 'carranga' AND edad >= 10 AND edad <= 20;
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    12. Listado de hombres que les guste la "carranga" sean de Colombia, y tengan entre 10 y 20 años de edad. Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.find({
+                        genero: "H",
+                        musica: "carranga",
+                        pais: "colombia",
+                        edad: { $gte: 10, $lte: 20 }
+                    });
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <p>
+                    13. Actualizar todos los usuarios que tengan 99 años, su nuevo género musical favorito será la "carranga". Con MySQL: 
+                  </p>
+                  <p>
+                    UPDATE users SET musica = 'NULL' WHERE musica = 'carranga' AND edad = 99;
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    13. Actualizar todos los usuarios que tengan 99 años, su nuevo género musical favorito será la "carranga". Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.updateMany(
+                        { edad: 99 },
+                        { $set: { musica: "carranga" } }
+                    );
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <p>
+                    14. Listar todos los usuarios que su nombre inicie con "a","A". Con MySQL:
+                  </p>
+                  <p>
+                    SELECT * FROM users WHERE nombres LIKE 'a%' OR nombres LIKE 'A%';
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    14. Listar todos los usuarios que su nombre inicie con "a","A". Con MongoDB:
+                  </p>
+                  <p>
+                    db.users.find({ nombres: { $regex: /^a|^A/ } });
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <p>
+                    15. Listar todos los usuarios que su apellido finalice en "z", "Z". Con MySQL: 
+                  </p>
+                  <p>
+                    SELECT * FROM users WHERE apellidos LIKE '%z' OR apellidos LIKE '%Z';
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    15. Listar todos los usuarios que su apellido finalice en "z", "Z". Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.find({ apellidos: { $regex: /z$|Z$/ } });
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <p>
+                    16. Actualizar los usuarios que tengan 50 años de edad, su nuevo género musical será NULL. Con MySQL:
+                  </p>
+                  <p>
+                    UPDATE users SET musica = 'NULL' WHERE edad = 50;
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    16. Actualizar los usuarios que tengan 50 años de edad, su nuevo género musical será NULL. Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.updateMany(
+                        { edad: 50 },
+                        { $unset: { musica: "" } }
+                    );
+                    <br>
+                    <br>
+                    db.users.updateMany(
+                        { edad: 50 },
+                        { $set: { musica: "NULL" } }
+                    );
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <p>
+                    17. Listar todos los usuarios que su género musical sea igual a NULL. Con MySQL: 
+                  </p>
+                  <p>
+                    SELECT * FROM users WHERE musica = "NULL";
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    17. Listar todos los usuarios que su género musical sea igual a NULL. Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.find({ musica: { $exists: false } });
+                    <br>
+                    <br>
+                    db.users.find({ musica: "NULL"});
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <p>
+                    18. ¿Cuál es el resultado de la suma de todas las edades de la Base de Datos?. Con MySQL: 
+                  </p>
+                  <p>
+                    SELECT SUM(edad) FROM users;
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    18. ¿Cuál es el resultado de la suma de todas las edades de la Base de Datos?. Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.aggregate([
+                        {
+                            $group: {
+                                _id: null,
+                                total: { $sum: "$edad" }
+                            }
+                        }
+                    ]);
+                  </p>
+                </td>
+              </tr>
+              
+              <tr>
+                <td>
+                  <p>
+                    19. ¿Cuántos usuarios tenemos registrados de "ecuador"?. Con MySQL: 
+                  </p>
+                  <p>
+                    SELECT COUNT(id) AS Total FROM users WHERE pais = 'ecuador';
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    19. ¿Cuántos usuarios tenemos registrados de "ecuador"?. Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.count({ pais: "ecuador" });
+                  </p>
+                </td>
+              </tr>
+              
+              <tr>
+                <td>
+                  <p>
+                    20. ¿Cuántos usuarios son de "colombia" y les gusta el vallenato?. Con MySQL: 
+                  </p>
+                  <p>
+                    SELECT COUNT(id) AS Total FROM users WHERE pais = 'colombia' AND musica = "vallenato";
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    20. ¿Cuántos usuarios son de "colombia" y les gusta el vallenato?. Con MongoDB: 
+                  </p>
+                  <p>
+                    db.users.count({ pais: "colombia", musica: "vallenato" });
+                  </p>
+                </td>
+              </tr> 
+                
+
+            </tbody>
+        </table>
+    </section>
+
+</body>
+</html>
